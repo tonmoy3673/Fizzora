@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
 
+interface Product{
+    category:string;
+}
+
+interface ProductResponse{
+    products:Product[]; 
+}
 
 const Sidebar = () => {
     const [categories,setCategories] = useState<string[]>([]);
@@ -27,8 +34,12 @@ const Sidebar = () => {
                    
                 }
                 else{
-                const data = await res.json();
-                setCategories(data);
+                const data : ProductResponse = await res.json();
+                const uniqueCategories = Array.from(
+                    new Set(data.products.map((product)=>product.category))
+                )
+                console.log(uniqueCategories);
+                setCategories(uniqueCategories)
                 setError(null);
                 }
 
